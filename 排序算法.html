@@ -1,0 +1,278 @@
+<script type="text/javascript">
+  function swap(ary, i, j){
+    if (i===j){
+      return
+    }
+    var tmp = ary[i]
+    ary[i] = ary[j]
+    ary[j] = tmp
+  }
+  //[ary[i],ary[j]]=[ary[j],ary[i]]
+
+  function randomRange(n){
+    return new Array(n).fill(0).map(it => Math.random()*n | 0)
+  }
+
+
+
+  function bubbleSort(ary){
+    var flag = true
+    for (var i = ary.length-1; i > 0 && flag; i--){
+      flag = false
+      for (var j = 0; j < i; j++){
+        if (ary[j] > ary[j+1]){
+          swap(ary, j, j+1)
+          flag = true
+        }
+      }
+    }
+    return ary
+  }
+
+  function selectSort(ary){
+    for (var i = 0; i < ary.length-1; i++){
+      var minIndex = i
+      for (var j = i+1; j < ary.length; j++){
+        if (ary[j] < ary[minIndex]){
+          minIndex = j
+        }
+      }
+      swap(ary, i, minIndex)
+    }
+    return ary
+  }
+
+  function insertSort(ary){
+    for (var i = 1; i < ary.length; i++){
+      var tmp = ary[i]
+      var j = i - 1
+      while(j >= 0 && tmp < ary[j]){
+        ary[j+1] = ary[j]
+        j--
+      }
+      ary[j+1] = tmp
+      // var tmp = ary[i]
+      // for (var j = i-1; j >= 0; j--){
+      //   if (tmp < ary[j]){
+      //     ary[j+1] = ary[j]
+      //   } else {
+      //     break
+      //   }
+      // }
+      // ary[j+1] = tmp
+    }
+    return ary
+  }
+
+  //折半插入排序
+  function insertSort1(ary){
+
+  }
+
+  function shellSort(arr){
+    var len = arr.length,
+        temp,
+        gap = 1;
+    while(gap < len/3) {   
+        gap =gap*3+1;
+    }
+    for (gap; gap > 0; gap = Math.floor(gap/3)) {
+        for (var i = gap; i < len; i++) {
+            temp = arr[i];
+            for (var j = i-gap; j >= 0 && arr[j] > temp; j-=gap) {
+                arr[j+gap] = arr[j];
+            }
+            arr[j+gap] = temp;
+        }
+    }
+    return arr;
+    // for(let increment=Math.floor(arr.length/2);increment>0;increment=Math.floor(increment/2)){
+    //     for(let i=increment;i<arr.length;i++){
+    //         let temp=arr[i];
+    //         let j=i-increment;
+    //         while(j>=0&&arr[j]>temp){
+    //             arr[j+increment]=arr[j];
+    //             j-=increment;
+    //         }
+    //         arr[j+increment]=temp;
+    //     }
+    // }
+    // return arr;
+
+  }
+
+  function bstSort(ary){
+    var root = null
+    ary.forEach(it => insertToBstTree(root, it))
+    var res = []
+    inOrderTraverse(root, (it) => res.push(it))
+    return res
+  }
+  function inOrderTraverse(root, action){
+    if (!root){
+      inOrderTraverse(root.left, action)
+      action(root.val)
+      inOrderTraverse(root.right, action)
+    }
+  }
+  function insertToBstTree(root, value){
+    if(!root){
+      return {
+        val: value,
+        left: null,
+        right: null
+      }
+    }
+    value < root.val ? insertToBstTree(root.left, value) : insertToBstTree(root.right, value)
+    return root
+  }
+
+  function quickSort(ary, left=0, right=ary.length-1){
+    var partitionIndex
+    if (left < right) {
+      partitionIndex = partion(ary, left, right)
+      quickSort(ary, left, partitionIndex-1)
+      quickSort(ary, partitionIndex+1, right)
+    } 
+    return ary
+  }
+
+  function partition(ary, left, right){
+    var pivotIndex = Math.floor((right - left + 1) * Math.random() + start)
+    var pivot = ary[pivotIndex]
+    swap(ary, left, pivotIndex)
+    var index = left - 1
+    for (var i = left; i < ary.length; i++){
+      if (ary[i] < pivot){
+        index++
+        swap(ary, i, index)
+      }
+    }
+    swap(ary, left, index)
+    return index
+  }
+
+
+  function partition2(arr, low, high) {
+    let pivot = arr[low];
+    while (low < high) {
+      while (low < high && arr[high] > pivot) {
+        --high;
+      }
+      arr[low] = arr[high];
+      while (low < high && arr[low] <= pivot) {
+        ++low;
+      }
+      arr[high] = arr[low];
+    }
+    arr[low] = pivot;
+    return low;
+  }
+
+  function quickSort1(ary){
+    //此种方式需要额外空间
+    if (ary.length < 2){
+      return ary.slice()
+    }
+    var pivot = ary[Math.floor(ary.length * Math.random())]
+    var left = [], middle = [], right = []
+    for (var it of ary){
+      if (it < pivot){
+        left.push(it)
+      } else if (it > pivot){
+        right.push(it)
+      } else if (it === pivot){
+        middle.push(it)
+      }
+    }
+    return quickSort(left).concat(middle, quickSort(right))
+
+  }
+
+  function mergeSort(ary){
+    //自上而下递归
+    if(ary.length < 2){
+      return ary
+    }
+    var middle = Math.floor(ary.length / 2)
+    var left = ary.slice(0, middle)
+    var right = ary.slice(middle)
+    return merge(mergeSort(left), mergeSort(right))
+  }
+
+  function merge(left, right){
+    var res = []
+    while (left.length > 0 && right.length > 0){
+      left[0] <= right[0] ? res.push(left.shift()) : res.push(right.shift())
+    }
+    if (left.length > 0){
+      res.concat(left)
+    } else {
+      res.concat(right)
+    }
+    return res
+  }
+
+  function mergeSort1(ary){
+    //自下而上迭代
+  }
+
+
+  function heapSort(ary){
+    heapify(ary)
+    for (var i = ary.length - 1; i > 0; i--){
+      swap(ary, i, 0)
+      reHeapDown(ary, 0, i-1)
+    }
+    return ary
+  }
+  function heapify(ary){
+    for(var i = ary.length - 1; i >= 0; i--){
+      reHeapDown(ary, i)
+    }
+    return ary
+    //或者reHeapUp构建
+    // function reHeapUp(idx){
+    //   if(idx === 0){
+    //     return
+    //   }
+    //   var pidx = (idx - 1) >> 1
+    //   if (ary[pidx] < ary[idx]){
+    //     swap(ary, pidx, idx)
+    //     reHeapUp(pidx)
+    //   }
+    // }
+    // for(var i = 1; i < ary.length; i++){
+    //   reHeapUp(i)
+    //   return ary
+    // }
+  }
+  function reHeapDown(ary, idx, end = ary.length-1){
+    var leftIdx = idx * 2 + 1
+    var rightIdx = idx * 2 + 2
+    var maxIdx = idx
+    if(leftIdx <= end && ary[leftIdx] > ary[maxIdx]){
+      maxIdx = leftIdx
+    }
+    if(rightIdx <= end && ary[rightIdx] > ary[maxIdx]){
+      maxIdx = rightIdx
+    }
+    if(idx !== maxIdx){
+      swap(ary, idx, maxIdx)
+      reHeapDown(ary, maxIdx)
+    }
+  }
+
+
+  function countSort(ary){
+
+  }
+
+  function tongSort(ary){
+
+  }
+
+  function jishuSort(ary){
+
+  }
+</script>

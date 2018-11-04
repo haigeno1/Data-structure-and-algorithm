@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>data structure</title>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+
+  class BST{
+    constructor(){
+      this.root = null
+      this.size = 0
+    }
+    newNode(value){
+      return {
+        value: value, 
+        left: null,
+        right: null,
+      }
+    }
+    add(val){
+      if(this.root == null){
+        return this.root = this.newNode(val)
+      }
+      var p = this.root
+      while(1){
+        if (val < p.value){
+          if (p.left == null){
+            p.left = this.newNode(val)
+            return this.root
+          }
+          p = p.left
+        } else {
+          if (p.right == null){
+            p.right = this.newNode(val)
+            return this.root
+          }
+          p = p.right
+        }
+      }
+    }
+    add1(val){
+      return this._add1(this.root, val)
+    }
+    _add1(val){
+      if(node == null){
+        this.size++
+        return newNode(val)
+      }
+      if (val < node.value){
+        node.left = this._add1(node.left, val)
+      } else {
+        node.right = this._add1(node.right, val)
+      }
+    }
+
+    preOrderTraverse(action){
+      if (this.root){
+        var stack = []
+        stack.push(this.root)
+        while(stack.length > 0){
+          var node = stack.pop()
+          action(node.value)
+          if (node.right){
+            stack.push(node.right)
+          }
+          if (node.left){
+            stack.push(node.left)
+          }
+        }
+      }
+    }
+    preOrderTraverse1(action){
+      this._preOrderTraverse(this.root, action)
+    }
+    _preOrderTraverse1(node, action){
+      if (node){
+        action(node.value)
+        _preOrderTraverse(node.left, action)
+        _preOrderTraverse(node.right, action)
+      }
+    }
+
+    midOrderTraverse(action){
+      if (this.root){
+        var stack = []
+        var node = this.root
+        while(stack.length > 0 || node){
+          if (node){
+            stack.push(node)
+            node = node.left
+          } else {
+            node = stack.pop()
+            action(node.value)
+            node = node.right
+          }
+        }
+        // var node = this.root.left
+        // while(stack.length > 0 || node){
+        //   while (node){
+        //     stack.push(node)
+        //     node = node.left
+        //   }
+        //   node = stack.pop()
+        //   action(node.value)
+        //   node = node.right
+        // }
+      }
+    }
+
+    // midOrderTraverse1(action){
+    //   if (this.root){
+    //     var stack1 = []
+    //     var stack2 = []
+    //     var node = this.root
+    //     stack1.push(this.root)
+    //     while(stack1.length > 0){
+    //       // if(node.right){
+    //       //   stack1.push(node)
+    //       //   node = node.right
+    //       // }
+    //       // if(node.left){
+    //       //   stack1.push(node)
+    //       //   node = node.left
+    //       // }
+    //       // var lastNode = stack1.pop()
+    //       // stack2.push(lastNode)
+    //       // var node = stack1.pop()
+
+
+    //       // var node = stack1.pop()
+    //       // stack2.push(node)
+    //       // if (node.left){
+    //       //   stack1.push(node.left)
+    //       // }
+    //       // if(node.right){
+    //       //   stack1.push(node.right)
+    //       // }
+    //     }
+    //     while (stack2.length > 0) {
+    //       action(s2.pop());
+    //     }
+    //   }
+    // }
+
+    midOrderTraverse2(action){
+      this._midOrderTraverse(this.root, action)
+    }
+    _midOrderTraverse2(node, action){
+      if (node){
+        _midOrderTraverse2(node.left, action)
+        action(node.value)
+        _midOrderTraverse2(node.right, action)
+      }
+    }
+
+    postOrderTraverse(action){
+      if (this.root){
+        var stack1 = []
+        var stack2 = []
+        stack1.push(this.root)
+        while(stack1.length > 0){
+          var node = stack1.pop()
+          stack2.push(node)
+          if (node.left){
+            stack1.push(node.left)
+          }
+          if (node.right){
+            stack1.push(node.right)
+          }
+        }
+        while(stack2.length > 0){
+          action(stack2.pop().value)
+        }
+      }
+    }
+
+    postOrderTraverse1(action){
+      if(this.root){
+        var node = this.root
+        var stack = [this.root]
+        while(stack.length > 0){
+          if(node.left){
+            stack.push(node.left)
+            node = node.left
+          } else if (node.right){
+            stack.push(node.right)
+            node = node.right
+          } else {
+            var lastNode = stack.pop()
+            action(lastNode.value)
+            node = stack.pop()
+            if(node === undefined) return 
+            stack.push(node)
+            if (node.right && node.right !== lastNode){
+              stack.push(node.right)
+              node = node.right
+            } else {
+              node = {}
+            }
+          }
+        }
+        // var node = this.root
+        // var stack 
+        // var lastNode
+        // do{
+        //   if (node){
+        //     stack.push(node)
+        //     node = node.left
+        //   } else {
+        //     node = stack.pop()
+        //     if (node === undefined) return 
+        //     stack.push(node)
+        //     node = node.right
+        //     if (!node && node !== lastNode){
+        //       action(node.value)
+        //       lastNode = stack.pop()
+        //     }
+        //   }
+        // } while(stack.length > 0)
+      }
+    }
+        //??3种情况都有1个栈或者两个栈的情况
+
+    postOrderTraverse2(action){
+      this._postOrderTraverse2(this.root, action)
+    }
+    _postOrderTraverse2(node, action){
+      if (node){
+        _postOrderTraverse2(node.left, action)
+        _postOrderTraverse2(node.right, action)
+        action(node.value)
+      }
+    }
+  }
+
+  // var pq = new PriorityQueue()
+  // pq.add(1,2,3)
+  // pq.delete(1,2,3)
+  class PriorityQueue{
+    constructor(){
+      this.tree = []
+    } 
+    _swap(i, j){
+      var tmp = this.tree[i]
+      this.tree[i] = this.tree[j]
+      this.tree[j] = tmp
+    }
+    reHeapUp(idx){
+      if (idx === 0){
+        return 
+      }
+      var pidx = (idx - 1) >> 1
+      if (this.tree[idx] < this.tree[pidx]){
+        this._swap(idx, pidx)
+        this.reHeapUp(pidx)
+      }
+    }
+    add(val){
+      this.tree.push(val)
+      this.reHeapUp(this.tree.length - 1)
+
+      // var idx = this.tree.length
+      // this.tree.push(val)
+      // var pidx = Math.floor((idx - 1) / 2)
+      // while(pidx >= 0){
+      //   if (this.tree[idx] < this.tree[pidx]){
+      //     this._swap(this.tree, idx, pidx)
+      //     idx = (idx - 1) >> 1
+      //     pidx = (pidx - 1) >> 1
+      //   } else {
+      //     break
+      //   }
+      // }
+    }
+    delete(){
+      var res = this.tree[0]
+      this.tree[0] = this.tree.pop()
+      this.reHeapDown(0)
+      return res
+    }
+    reHeapDown(idx){
+      if ((idx * 2 + 1) > this.tree.length - 1) {
+        return 
+      }
+      if ((idx * 2 + 1) === this.tree.length - 1) {
+        if (this.tree[idx] > this.tree[idx * 2 + 1]){
+          this._swap(idx, idx * 2 + 1)
+        } 
+        return 
+      }      
+      var cidx
+      this.tree[idx * 2 + 1] < this.tree[idx * 2 + 2] 
+        ? cidx = idx * 2 + 1
+        : cidx = idx * 2 + 2
+      if (this.tree[idx] > this.tree[cidx]){
+        this._swap(idx, cidx)
+        this.reHeapDown(cidx)
+      }
+    }
+  }
+
+  //开放定址法
+  class HashMap{
+    constructor(initSize = 17){
+      this.size = initSize
+      this.keys = new Array(this.size)
+      this.values = new Array(this.size)
+      this._keyCount = 0
+      this._searchCount = 0
+    } 
+    hash(key){
+      var hash = 0
+      //防止数字过大溢出
+      var seed = 131
+      for (var i = 0; i < key.length; i++){
+        hash = hash * seed + key.charCodeAt(i)
+      }
+      return hash % this.size
+    }
+    hash2(key, i){
+      return (this.hash(key) + i) % this.size
+    }
+    // keyIndex(key){
+    //   for (var i = 0; i < this.size; i++){
+    //     var pos = this.hash2(key, i)
+    //     if (this.keys[pos] == null){
+    //       return pos
+    //     } else if (this.keys[pos] === key){
+    //       return pos
+    //     }
+    //   }
+    // }
+
+    get(key){
+      for(var i = 0; i < this.size; i++){
+        var pos = this.hash2(key, i)
+        if (this.keys[pos] === key){
+          return this.values[pos]
+        }
+      }
+    }
+
+    set(key, val){
+      for (var i = 0; i < this.size; i++){
+        var pos = this.hash2(key, i)
+        if (this.keys[pos] == null){
+          this.keys[pos] = key
+          this.values[pos] = val
+          this.keyCount++
+          if (this.keyCount / this.size > 0.7){
+            this.rehash()
+          } 
+          return this
+        } else if (this.keys[pos] === key){
+          this.values[pos] = val
+          return this
+        } else 
+      }
+    }
+
+    rehash(){
+      var newHashMap = new HashMap(this.size * 2)
+      for (var i = 0; i < this.keys.length; i++){
+        newHashMap.set(this.keys[i], this.values[i])
+      }
+      this.keys = newHashMap.keys
+      this.values = newHashMap.values
+      this.size = newHashMap.size
+      this._keyCount = newHashMap._keyCount
+      this._searchCount += newHashMap._searchCount
+    }
+  } 
+
+  //链地址法
+  class HashMap1{
+    constructor(initSize = 17){
+      this.size = initSize
+      this.keys = new Array(this.size)
+      this.values = new Array(this.size)
+      this._keyCount = 0
+      this._searchCount = 0
+    } 
+    hash(key){
+      var hash = 0
+      var seed = 131
+      for (var i = 0; i < key.length; i++){
+        hash = hash * seed + key.charCodeAt(i)
+      }
+      return hash % this.size
+    }
+    get(key){
+      var pos = this.hash(key)
+      if (this.keys[pos] != null){
+        var head = this.values[pos]
+        while(p){
+          if(p.value[key] === key){
+            return p.value[key].value
+          }
+          p = p.next
+        }
+      }
+    }
+    set(key, val){
+      var pos = this.hash(key)
+      if (this.keys[pos] == null){
+        this.values[pos] = {
+          value: {key: key, value: val},
+          next: null
+        }
+      } else {
+        this.values[pos] = {
+          value: {key: key, value: val},
+          next: this.values[pos]
+        }
+      }
+    }
+  }
+
+  class UnionSet{
+    constructor(size){
+      this.set = new Array(size).fill(-1)
+    } 
+    find(x){
+      if (this.set[x] < 0){
+        return x
+      } else {
+        return this.set[x] = this.find(this.set[x])
+      }
+    }
+    // findWithoutCompress(x){
+    //   if (this.set[x] < 0){
+    //     return x
+    //   } else {
+    //     return this.find(this.set[x])
+    //   }
+    // }
+    union(x, y){
+      var rootx = this.find(x)
+      var rooty = this.find(y)
+      var sizex = -this.set[rootx]
+      var sizey = -this.set[rooty]
+      if (sizex < sizey){
+        this.set[rootx] = rooty
+        this.set[rooty] = -sizex - sizey
+      } else {
+        this.set[rooty] = rootx
+        this.set[rootx] = -sizex - sizey
+      }
+      return this
+    }
+    // unionByHeight(x, y){
+    //   var rootx = this.find(x)
+    //   var rooty = this.find(y)
+    //   var depthx = -this.set[rootx]
+    //   var depthy = -this.set[rooty]
+    //   if (depthx < depthy){
+    //     this.set[rootx] = rooty
+    //   } else if (depthx > depthy){
+    //     this.set[rooty] = rootx
+    //   } else {
+    //     this.set[rootx] = rooty
+    //     this.set[rooty]--
+    //   }
+    // }
+     
+    same(x, y){
+      if (this.find(x) === -1 && this.find(y) === -1){
+        return false
+      }
+      return this.find(x) === this.find(y) 
+    } 
+
+    sets(){
+      return this.set.filter(it => it <= -1).length
+    }
+  } 
+
+  class TrieNode {
+    constructor(){
+      this.path = 0
+      this.end = 0
+      this.next = new Array()
+    }
+  }
+  class Trie{
+    constructor(){
+      this.root = new TrieNode()
+    }
+    insert(str){
+      if(!str){return}
+      var node = this.root
+      for (var i = 0; i < str.length; i++){
+        var index = str[i]
+        if (node.next[index] == null){
+          node.next[index] = new TrieNode()
+        }
+        node.path++
+        node = node.next[index]
+      }
+      node.end++
+    }
+    search(str){
+      if(!str) {return} 
+      var node = this.root
+      for (var i = 0; i < str.length; i++){
+        var index = str[i]
+        if(node.next[index] == null){
+          return 0
+        }
+        node = node.next[index]
+      }
+      return node.end
+    }
+    delete(str){
+      if (this.search(str) === 0){
+        return
+      }
+      var node = this.root
+      for (var i = 0; i < str.length; i++){
+        var index = str[i]
+        node = node.next[index]
+        node.path--
+        if (node.path === 0){
+          node.next = null
+          return
+        }
+      }
+      node.end--
+    }
+  }
+
+  class graph{
+    constructor(){
+
+    } 
+  } 
+
+
+  class Queue {
+    constructor(...args){
+      this.front = new Node(Symbol())
+      this.rear = this.front
+      this.size = 0;
+      [].concat(...args).forEach(it => this.enQueue(it))
+      //[].concat.apply([],args)
+    }
+    enQueue(item){
+      this.size++
+      this.rear.next = new Node(item)
+      this.rear = this.rear.next
+      if (this.size === 1){
+        this.front = this.rear
+      }
+      return this
+    }
+    deQueue(){
+      if (this.size === 0){
+        return
+      } else if(this.size === 1){
+        var res = this.front.value
+        this.size--
+        this.front = new Node(Symbol())
+        this.rear = this.front
+        return res
+      } else {
+        this.size--
+        var res = this.front.value
+        this.front = this.front.next
+        return res
+      }
+    }
+  }
+
+  class SqQueue {
+    constructor(){
+
+    }
+  }
+
+  class Stack{
+    //用链表实现也可以
+    constructor(){
+      this.stack = []
+    }
+    push(item){
+      this.stack.push(item)
+      return this
+    }
+    pop(){
+      return this.stack.pop()
+    }
+    size(){
+      return this.stack.length
+    }
+  }
+
+  class Node {
+    constructor(value, next = null){
+      this.value = value
+      this.next = next
+    }
+  }
+
+  class Linklist{
+    constructor(...args){
+      this.head = this.fromArray([].concat(...args))
+      // if (this.head === null){
+      //   this.head = {value: Symbol(), next: null}
+      // }
+    }
+    
+    fromArray(ary){
+      if (ary.length === 0){
+        return null
+      }
+      var head,p
+      head = p = {value:ary[0],next:null}
+      for (var i = 1; i < ary.length;i++){
+        var node = {value:ary[i],next:null}
+        p.next = node
+        p = node
+      }
+      return head
+    } 
+    toArray(){
+      var res = [],p
+      p = this.head
+      while(p){
+        res.push(p.value)
+        p = p.next
+      }
+      return res      
+    }  
+    insert(n, value){
+      var head = this.head
+      var node = {
+        value:value,
+        next:null
+      }
+      if (head === null){
+        return node
+      }
+      if (n === 0){
+        node.next = head
+        return node
+      }
+      var p = head
+      while(--n){
+        p = p.next
+      }
+      node.next = p.next
+      p.next = node
+      return head
+    }
+    remove(n){
+      return this._remove(this.head, n)
+    }
+    _remove(head, n){
+      if (head === null){
+        return null
+      }
+      if (n === 0){
+        return head.next
+      }
+      head.next = this._remove(head.next,n-1)
+      return head
+    }
+    size(){
+      var head = this.head
+      var count = 0
+      var p = head
+      while(p){
+        count++
+        p = p.next
+      }
+      return count
+    }
+    nth(n){
+      var len = this.size(this.head)
+      if (n > len){
+        return undefined
+      }
+      var p = this.head 
+      while(n--){
+        p = p.next
+      }
+      return p
+    }
+    reverse(){
+      var head = this.head
+      var p1 = null
+      var p2 = null
+      var p3 = head
+      while(p3){
+        p1 = p2
+        p2 = p3
+        p3 = p3.next
+        p2.next = p1
+      }
+      return p2
+    }
+    
+  }
+
+  class DoubleLinkList{
+
+  }
+
+
+</script>
+</html>
